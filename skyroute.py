@@ -3,12 +3,13 @@ from vc_metro import vc_metro
 from vc_landmarks import vc_landmarks
 from landmark_choices import landmark_choices
 
-# Build your program below:
+
 landmark_string = ""
 for letter, landmark in landmark_choices.items():
   landmark_string += "{0} - {1}\n".format(letter, landmark)
 stations_under_construction = []
 
+# Greeting message when running application
 def greet():
   print("Hi there and welcome to SkyRoute!")
   print("We'll help you find the shortest route between the following Vancouver landmarks:\n" + landmark_string)
@@ -18,6 +19,7 @@ def skyroute():
   new_route()
   goodbye()
 
+# Setting beginning and end location
 def set_start_and_end(start_point, end_point):
   if start_point != None:
     change_point = input("""What would you like to change? You can enter 'o' for 'origin', 'd' for 'destination', or 'b' for 'both': """)
@@ -36,6 +38,7 @@ def set_start_and_end(start_point, end_point):
     end_point = get_end()
   return start_point, end_point
 
+# Checking starting location
 def get_start():
   start_point_letter = input("Where are you coming from? Type in the corresponding letter: ")
   if start_point_letter in landmark_choices:
@@ -45,6 +48,7 @@ def get_start():
     print("Sorry, that's not a landmark we have data on. Let's try this again...")
     get_start()
 
+# Checking end location
 def get_end():
   end_point_letter = input("Ok, where are you headed? Type in the corresponding letter: ")
   if end_point_letter in landmark_choices:
@@ -54,11 +58,13 @@ def get_end():
     print("Sorry, that's not a landmark we have data on. Let's try this again...")
     get_end()
 
+# Displays list of landmarks and their associated letter
 def show_landmarks():
   see_landmarks = input("Would you like to see the list of landmarks again? Enter y/n: ")
   if see_landmarks == 'y':
     print(landmark_string)
 
+# For creating the route from start to end, checks for maintenance
 def new_route(start_point = None, end_point = None):
   start_point, end_point = set_start_and_end(start_point, end_point)
   shortest_route = get_route(start_point, end_point)
@@ -72,6 +78,7 @@ def new_route(start_point = None, end_point = None):
     show_landmarks()
     new_route(start_point, end_point)
 
+# Helper function used in new_route for developing the route used from beginning station to end station
 def get_route(start_point, end_point):
   start_stations = vc_landmarks[start_point]
   end_stations = vc_landmarks[end_point]
@@ -89,6 +96,7 @@ def get_route(start_point, end_point):
   shortest_route = min(routes, key=len)
   return shortest_route
 
+# Checking if stations have been added to construction array
 def get_active_stations():
   updated_metro = vc_metro
   for station_under_construction in stations_under_construction:
@@ -99,9 +107,8 @@ def get_active_stations():
         updated_metro[current_station] = set([])
   return updated_metro
 
+# Goodbye message after ending SkyRoute
 def goodbye():
   print("Thanks for using SkyRoute!")
-
-
 
 skyroute()
